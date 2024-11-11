@@ -4,7 +4,8 @@
   "description": "Nimo Test Exercise",
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.687.0",
+    "@aws-sdk/client-lambda": "^3.689.0",
     "@aws-sdk/client-ses": "3.687.0",
-    "@aws-sdk/lib-dynamodb": "^3.687.0"
+    "@aws-sdk/lib-dynamodb": "3.687.0"
   }
 }
