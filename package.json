@@ -1,0 +1,8 @@
+{
+  "name": "nimo-backed",
+  "version": "1.0.0",
+  "description": "Nimo Test Exercise",
+  "dependencies": {
+    "@aws-sdk/client-ses": "^3.687.0"
+  }
+}
