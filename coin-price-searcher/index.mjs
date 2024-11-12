@@ -74,21 +74,36 @@ const createCoinLog = async(username, sk, coin, price, unit, timestamp, date) =>
 }
 
 export const handler = async (event) => {
-  const { username, ids, currencies } = event
+  const { headers, body } = event
+  const { username } = headers
+  const bodyFormated = JSON.parse(body)
+  const { ids, currencies } = bodyFormated
+  if(!username) {
+    return {
+      statusCode: 400,
+      body: "username is missing in header"
+    }
+  }
+  if(!Array.isArray(ids) || !Array.isArray(currencies)) {
+    return {
+      statusCode: 400,
+      body: "ids or currencies must be array"
+    }
+  }
+  if(ids.length === 0 || currencies === 0) {
+    return {
+      statusCode: 400,
+      body: "ids or currencies must not be empty"
+    }
+  }
   const timestamp = Date.now()
   const date = new Date().toISOString(); 
   try {
     const coinsPrice = await getCoinPrice(ids, currencies);
     await putCoinData(username, coinsPrice, timestamp ,date);
     await invokeEmailSender({ coinsPrice, timestamp });
-    return { 
-      body: coinsPrice,
-      statusCode: 200
-    }
+    return coinsPrice
   } catch (err) {
-    return {
-      statusCode: 400,
-      body: err.message
-    }
+    return err.message
   }
 };
