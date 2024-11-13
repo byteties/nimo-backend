@@ -10,7 +10,7 @@ Resources:
   CoinPriceSearcher:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: coin-price-searcher/function.zip
+      Handler: coin-price-searcher/index.mjs 
       Runtime: nodejs18.x
       CodeUri: ./coin-price-searcher
       Environment:
@@ -29,7 +29,7 @@ Resources:
   EmailSender:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: email-sender-lambda/function.zip
+      Handler: email-sender-lambda/index.mjs
       Runtime: nodejs18.x
       CodeUri: ./email-sender-lambda
       Environment:
@@ -40,7 +40,7 @@ Resources:
   HistorySearcher:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: history-searcher/function.zip
+      Handler: history-searcher/index.mjs
       Runtime: nodejs18.x
       CodeUri: ./history-searcher
       Environment:
