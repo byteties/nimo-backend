@@ -3,7 +3,7 @@ Transform: AWS::Serverless-2016-10-31
 Description: SAM Template
 
 Parameters:
-  CG_key:
+  CGKey:
     Type: String
 
 Resources:
@@ -15,10 +15,10 @@ Resources:
       CodeUri: ./coin-price-searcher
       Environment:
         Variables:
-          COIN_SEARCH_LOG_TABLE: !Ref coin-search-log
+          COIN_SEARCH_LOG_TABLE: !Ref DynamoDBTable
           COIN_GECKO_URL: "https://api.coingecko.com/api/v3/simple/"
           EMAIL_SENDER_LAMBDA: "email-sender"
-          X_CG_API_KEY: CG_key
+          X_CG_API_KEY: !Ref CGKey
       Events:
         ApiEvent1:
           Type: Api
