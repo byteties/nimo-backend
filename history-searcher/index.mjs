@@ -6,14 +6,18 @@ const client = new DynamoDBClient();
 const dynamo = DynamoDBDocument.from(client);
 
 const coinLogQuery = async (username, day = '') => {
-  const response = await dynamo.query({
+  const params = {
     TableName: COIN_SEARCH_LOG_TABLE,
-    KeyConditionExpression: 'username = :username and begins_with(sk, :sk)',
+    KeyConditionExpression: 'username = :username',
     ExpressionAttributeValues: {
       ":username": username,
-      ":sk": day
     }
-  });
+  }
+  if(day) {
+    params.KeyConditionExpression = 'username = :username and begins_with(sk, :sk)'
+    params.ExpressionAttributeValues[":sk"] = day
+  }
+  const response = await dynamo.query(params);
   const { Items, Count, LastEvaluatedKey } = response
   return { 
     items: Items,
@@ -25,17 +29,11 @@ const coinLogQuery = async (username, day = '') => {
 export const handler = async (event) => {
   const { headers, queryStringParameters } = event
   const { username } = headers;
-  const { day } = queryStringParameters;
+  const day = queryStringParameters?.day;
   if(!username) {
     return {
       statusCode: 400,
       body: "username is missing in header"
-    }
-  }
-  if(!day) {
-    return {
-      statusCode: 400,
-      body: "day is missing in queryStringParameters"
     }
   }
   try {
