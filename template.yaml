@@ -1,0 +1,115 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SAM Template
+
+Parameters:
+  CG_key:
+    Type: String
+
+Resources:
+  CoinPriceSearcher:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: coin-price-searcher/index.mjs 
+      Runtime: nodejs18.x
+      CodeUri: ./coin-price-searcher
+      Environment:
+        Variables:
+          COIN_SEARCH_LOG_TABLE: !Ref coin-search-log
+          COIN_GECKO_URL: "https://api.coingecko.com/api/v3/simple/"
+          EMAIL_SENDER_LAMBDA: "email-sender"
+          X_CG_API_KEY: CG_key
+      Events:
+        ApiEvent1:
+          Type: Api
+          Properties:
+            Path: /coin-prices
+            Method: post
+
+  EmailSender:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: email-sender-lambda/index.mjs
+      Runtime: nodejs18.x
+      CodeUri: ./email-sender-lambda
+      Environment:
+        Variables:
+          DESTINATION_EMAIL: "bigbyte23@gmail.com"
+          SENDER_EMAIL: "chayangkoondokhom@gmail.com"
+
+  HistorySearcher:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: history-searcher/index.mjs
+      Runtime: nodejs18.x
+      CodeUri: ./history-searcher
+      Environment:
+        Variables:
+          COIN_SEARCH_LOG_TABLE: !Ref coin-search-log
+          
+      Events:
+        ApiEvent2:
+          Type: Api
+          Properties:
+            Path: /historys
+            Method: get
+  
+  DynamoDBTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: "coin-search-log"
+      AttributeDefinitions:
+        - AttributeName: username
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+      KeySchema:
+        - AttributeName: username
+          KeyType: HASH  
+        - AttributeName: sk
+          KeyType: RANGE
+
+  CoinPriceSearcherApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      DefinitionBody:
+        openapi: "3.0.1"
+        info:
+          title: "API Gateway 1"
+        paths:
+          /endpoint1:
+            post:
+              x-amazon-apigateway-integration:
+                uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CoinPriceSearcher.Arn}/invocations
+                httpMethod: POST
+                type: aws_proxy
+
+  HistorySearcherApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      DefinitionBody:
+        openapi: "3.0.1"
+        info:
+          title: "API Gateway 2"
+        paths:
+          /endpoint2:
+            get:
+              x-amazon-apigateway-integration:
+                uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HistorySearcher.Arn}/invocations
+                httpMethod: GET
+                type: aws_proxy
+
+Outputs:
+  ApiUrl1:
+    Value: !Sub "https://${CoinPriceSearcherApiGateway}.execute-api.${AWS::Region}.amazonaws.com/prod/"
+    Description: "URL for Coin price searcher API Gateway endpoint"
+
+  ApiUrl2:
+    Value: !Sub "https://${HistorySearcherApiGateway}.execute-api.${AWS::Region}.amazonaws.com/prod/"
+    Description: "URL for History API Gateway endpoint"
+
+  DynamoDBTableName:
+    Value: !Ref coin-search-log
+    Description: "DynamoDB table name for the application"
