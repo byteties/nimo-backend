@@ -46,4 +46,4 @@ jobs:
           
           # Deploy SAM application
           sam deploy --template-file packaged.yaml --stack-name $STACK_NAME --capabilities CAPABILITY_IAM \
-            --parameter-overrides "ParameterKey=CGKey,ParameterValue=${{ secrets.X_CG_API_KEY }}"
+            --parameter-overrides "ParameterKey=CGKey,ParameterValue=${{ secrets.X_CG_API_KEY }}" --force-upload
