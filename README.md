@@ -137,3 +137,7 @@ The architectural design of the API is open to the candidate.
         "count": 15
     }
 
+## Another Option 🛠️
+![architecture](./images/another-architech.png)
+
+Lambda -> dynamodb -> dynamodb stream -> lambda -> ses
