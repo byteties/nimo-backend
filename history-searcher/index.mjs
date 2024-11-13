@@ -1,8 +1,8 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
-import { COIN_SEARCH_LOG_TABLE } from './env.mjs'
+import { COIN_SEARCH_LOG_TABLE,REGION } from './env.mjs'
 
-const client = new DynamoDBClient();
+const client = new DynamoDBClient({ region: REGION });
 const dynamo = DynamoDBDocument.from(client);
 
 const coinLogQuery = async (username, day = '') => {

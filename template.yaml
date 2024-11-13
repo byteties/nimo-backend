@@ -12,6 +12,7 @@ Resources:
   CoinPriceSearcher:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: "CoinPriceSearcher"
       Handler: index.handler
       Runtime: nodejs18.x
       CodeUri: ./coin-price-searcher
@@ -23,6 +24,7 @@ Resources:
           EMAIL_SENDER_LAMBDA: "email-sender"
           X_CG_API_KEY: !Ref CGKey
           REGION: !Ref Region
+          EMAIL_SENDER_LAMBDA: !Ref EmailSender
       Events:
         ApiEvent1:
           Type: Api
@@ -33,6 +35,7 @@ Resources:
   EmailSender:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: "EmailSender"
       Handler: index.handler
       Runtime: nodejs18.x
       CodeUri: ./email-sender-lambda
@@ -46,6 +49,7 @@ Resources:
   HistorySearcher:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: "HistorySearcher"
       Handler: index.handler
       Runtime: nodejs18.x
       CodeUri: ./history-searcher
@@ -53,6 +57,7 @@ Resources:
       Environment:
         Variables:
           COIN_SEARCH_LOG_TABLE: !Ref DynamoDBTable
+          REGION: !Ref Region
           
       Events:
         ApiEvent2:

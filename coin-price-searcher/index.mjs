@@ -4,7 +4,7 @@ import { LambdaClient, InvokeCommand } from "@aws-sdk/client-lambda";
 import { COIN_SEARCH_LOG_TABLE, COIN_GECKO_URL,X_CG_API_KEY,EMAIL_SENDER_LAMBDA,REGION } from './env.mjs'
 const lambda = new LambdaClient({ region: REGION });
 
-const client = new DynamoDBClient();
+const client = new DynamoDBClient({ region: REGION });
 const dynamo = DynamoDBDocument.from(client);
 const tableName = COIN_SEARCH_LOG_TABLE;
 
