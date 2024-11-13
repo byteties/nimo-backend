@@ -16,9 +16,9 @@ Microservice 2: Search History
 - ✅ (Mandatory) Microservices must be deployed 100% serverless on AWS. 
 - ✅ (Mandatory) All code implementation must be using NodeJS.
 - ✅ (Mandatory) All code must be version controlled using git and GitHub. 
-- 🕒 (Optional) CICD using any tool (preferably GitHub Actions). 
-- 🕒 (Optional) Infrastructure as Code using any tool (preferably AWS SAM). 
-The architectural design of the API is open to the candidate. 
+- ✅ (Optional) CICD using any tool (preferably GitHub Actions). 
+- 🔄 (Optional) Infrastructure as Code using any tool (preferably AWS SAM). 
+- The architectural design of the API is open to the candidate. 
 
 ### III. Resources: 💡
 - 🧰 Cryptocurrency data API: https://www.coingecko.com/en/api/documentation
@@ -140,4 +140,5 @@ The architectural design of the API is open to the candidate.
 ## Another Option 🛠️
 ![architecture](./images/another-architech.png)
 
-Lambda -> dynamodb -> dynamodb stream -> lambda -> ses
+1. Lambda -> dynamodb -> dynamodb stream -> lambda -> ses
+2. Lambda -> dynamodb -> dynamodb stream -> queue -> lambda -> ses
