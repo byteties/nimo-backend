@@ -36,11 +36,10 @@ jobs:
         env:
           STACK_NAME: "nimo-sam-stack"  
           S3_BUCKET: "nimo-sam-deployment-bucket" 
-          CG_KEY: ${{ secrets.X_CG_API_KEY }}  # Access CG_KEY from GitHub Secrets
         run: |
           # Package SAM application and upload artifacts to S3
           sam package --s3-bucket $S3_BUCKET --output-template-file packaged.yaml
           
           # Deploy SAM application
           sam deploy --template-file packaged.yaml --stack-name $STACK_NAME --capabilities CAPABILITY_IAM \
-            --parameter-overrides CG_key=$CG_KEY
+            --parameter-overrides "ParameterKey=CG_key,ParameterValue=${{ secrets.X_CG_API_KEY }}"
