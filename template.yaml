@@ -5,6 +5,8 @@ Description: SAM Template
 Parameters:
   CGKey:
     Type: String
+  Region:
+    Type: String
 
 Resources:
   CoinPriceSearcher:
@@ -19,6 +21,7 @@ Resources:
           COIN_GECKO_URL: "https://api.coingecko.com/api/v3/simple/"
           EMAIL_SENDER_LAMBDA: "email-sender"
           X_CG_API_KEY: !Ref CGKey
+          REGION: !Ref Region
       Events:
         ApiEvent1:
           Type: Api
@@ -36,6 +39,7 @@ Resources:
         Variables:
           DESTINATION_EMAIL: "bigbyte23@gmail.com"
           SENDER_EMAIL: "chayangkoondokhom@gmail.com"
+          REGION: !Ref Region
 
   HistorySearcher:
     Type: AWS::Serverless::Function
