@@ -45,7 +45,7 @@ Resources:
       CodeUri: ./history-searcher
       Environment:
         Variables:
-          COIN_SEARCH_LOG_TABLE: !Ref coin-search-log
+          COIN_SEARCH_LOG_TABLE: !Ref DynamoDBTable
           
       Events:
         ApiEvent2:
@@ -55,9 +55,9 @@ Resources:
             Method: get
   
   DynamoDBTable:
-    Type: AWS::Serverless::SimpleTable
+    Type: AWS::DynamoDB::Table
     Properties:
-      TableName: "coin-search-log"
+      TableName: coin-search-log
       AttributeDefinitions:
         - AttributeName: username
           AttributeType: S
@@ -111,5 +111,5 @@ Outputs:
     Description: "URL for History API Gateway endpoint"
 
   DynamoDBTableName:
-    Value: !Ref coin-search-log
+    Value: !Ref DynamoDBTable
     Description: "DynamoDB table name for the application"
