@@ -43,4 +43,4 @@ jobs:
           
           # Deploy SAM application
           sam deploy --template-file packaged.yaml --stack-name $STACK_NAME --capabilities CAPABILITY_IAM \
-            --parameter-overrides "ParameterKey=CG_key,ParameterValue=$CG_KEY"
+            --parameter-overrides CG_key=$CG_KEY
