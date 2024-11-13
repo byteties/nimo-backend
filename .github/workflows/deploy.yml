@@ -34,8 +34,8 @@ jobs:
       # Package and deploy the SAM application
       - name: Deploy SAM application
         env:
-          STACK_NAME: "sam-coin-price-searcher-stack"  # Customize your stack name
-          S3_BUCKET: "sam-deployment-bucket"  # Replace with your S3 bucket name for deployments
+          STACK_NAME: "nimo-sam-stack"  
+          S3_BUCKET: "nimo-sam-deployment-bucket" 
           CG_KEY: ${{ secrets.X_CG_API_KEY }}  # Access CG_KEY from GitHub Secrets
         run: |
           # Package SAM application and upload artifacts to S3
