@@ -79,9 +79,9 @@ Resources:
       DefinitionBody:
         openapi: "3.0.1"
         info:
-          title: "API Gateway 1"
+          title: "Coin-price-email-api"
         paths:
-          /endpoint1:
+          /coin-prices:
             post:
               x-amazon-apigateway-integration:
                 uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${CoinPriceSearcher.Arn}/invocations
@@ -95,9 +95,9 @@ Resources:
       DefinitionBody:
         openapi: "3.0.1"
         info:
-          title: "API Gateway 2"
+          title: "History-search-api"
         paths:
-          /endpoint2:
+          /historys:
             get:
               x-amazon-apigateway-integration:
                 uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${HistorySearcher.Arn}/invocations
