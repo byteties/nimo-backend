@@ -3,7 +3,7 @@ name: Deploy SAM Application
 on:
   push:
     branches:
-      - feature/aws-sam  # or the branch you want to deploy from
+      - main # or the branch you want to deploy from
 
 jobs:
   deploy:
